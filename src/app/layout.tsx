@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Container from "./components/container";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import Container from "../components/container";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Evento",
   description: "Evento application",
-  
 };
 
 export default function RootLayout({
@@ -20,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-900 text-white overflow-y-scroll`}>
+      <body
+        className={`${inter.className} bg-gray-900 text-white overflow-y-scroll`}
+      >
         <Container>
           <Header />
           {children}
