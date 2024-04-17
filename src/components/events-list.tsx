@@ -1,4 +1,4 @@
-import { getEvents, sleep } from "@/lib/utils";
+import { getEvents } from "@/lib/server-utils";
 import EventCard from "./event-card";
 import PaginationControls from "./pagination-controls";
 
