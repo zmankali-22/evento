@@ -8,7 +8,7 @@ import Container from "../components/container";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Evento",
+  title: "Evento: the application",
   description: "Evento application",
 };
 
