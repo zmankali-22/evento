@@ -2,6 +2,7 @@ import clsx, { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import prisma from "./db";
 import { notFound } from "next/navigation";
+import { unstable_cache } from "next/cache";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,33 +18,35 @@ export async function sleep(ms: number) {
   });
 }
 
-export async function getEvents(city: string, page = 1) {
-  const events = await prisma.eventoEvent.findMany({
-    where: {
-      city: city === "all" ? undefined : capitalize(city),
-    },
-    orderBy: {
-      date: "asc",
-    },
-    take: 6,
-    skip: (page - 1) * 6,
-  });
-
-  let totalCount;
-  if (city === "all") {
-    totalCount = await prisma.eventoEvent.count();
-  } else {
-    totalCount = await prisma.eventoEvent.count({
+export const getEvents = unstable_cache(
+  async (city: string, page = 1) => {
+    const events = await prisma.eventoEvent.findMany({
       where: {
-        city: capitalize(city),
+        city: city === "all" ? undefined : capitalize(city),
       },
+      orderBy: {
+        date: "asc",
+      },
+      take: 6,
+      skip: (page - 1) * 6,
     });
+
+    let totalCount;
+    if (city === "all") {
+      totalCount = await prisma.eventoEvent.count();
+    } else {
+      totalCount = await prisma.eventoEvent.count({
+        where: {
+          city: capitalize(city),
+        },
+      });
+    }
+
+    return { events, totalCount };
   }
+);
 
-  return { events, totalCount };
-}
-
-export async function getEvent(slug: string) {
+export const getEvent = unstable_cache(async (slug: string) => {
   // const response = await fetch(
   //   `https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`
   // );
@@ -59,4 +62,4 @@ export async function getEvent(slug: string) {
     return notFound();
   }
   return data;
-}
+});
