@@ -24,6 +24,7 @@ export async function generateMetadata({
 export default async function EventPage({ params }: EventProps) {
   const slug = params.slug;
 
+  const data = await getEvent(slug);
 
   return (
     <main>
