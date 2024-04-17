@@ -9,7 +9,17 @@ type EventProps = {
   };
 };
 
+export async function generateMetadata({
+  params,
+}: EventProps): Promise<Metadata> {
+  const slug = params.slug;
 
+  const data = await getEvent(slug);
+
+  return {
+    title: data.name,
+  };
+}
 
 export default async function EventPage({ params }: EventProps) {
   const slug = params.slug;
